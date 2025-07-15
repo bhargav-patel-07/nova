@@ -4,7 +4,7 @@
 
 .dots-bg {
   background-color: #000000;
-  background-image: radial-gradient(rgba(236, 236, 236, 0.829) 1px, transparent 5%);
+  background-image: radial-gradient(rgb(163, 163, 163) 1px, transparent 0%);
   background-size: 30px 30px;
   background-position: -5px -5px;
 }
