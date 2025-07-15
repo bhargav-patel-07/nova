@@ -2,9 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
-.dots-bg {
-  background-color: #000000;
-  background-image: radial-gradient(rgb(163, 163, 163) 1px, transparent 0%);
-  background-size: 30px 30px;
-  background-position: -5px -5px;
-}
+
+/* From Uiverse.io by Lakshay-art */ 

@@ -2,13 +2,13 @@ import React from 'react';
 
 export default function Header() {
   return (
-    <header className="w-full flex justify-center pt-0">
+    <header className="w-full flex justify-center pt-5">
       <nav className="w-[90vw] max-w-5xl flex items-center justify-between px-4 py-2 rounded-2xl backdrop-blur-xl bg-white/40 border border-white/30 shadow-lg">
         {/* Logo */}
        
         {/* Nav Links */}
         <div className="hidden md:flex gap-2 bg-white/60 rounded-xl px-2 py-1 border border-white/40 shadow-inner backdrop-blur-md">
-          {['PRICING', 'DOCS', 'BLOG', 'TUTORIALS', 'CHANGELOG', 'DEPLOY', 'PARTNERS'].map(link => (
+          {['HOME', 'PRICING', 'SOCIALS'].map(link => (
             <a
               key={link}
               href="#"
