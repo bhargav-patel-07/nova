@@ -3,7 +3,6 @@ import Image from "next/image";
 import { StarsBackground } from "../components/ui/stars-background";
 import { Globe } from "../components/magicui/globe";
 import Input from "../components/ui/input";
-import Button from "../components/ui/Button";
 import Features from "../components/landing/Features";
 import Pricing from "../components/landing/Pricing";
 import { FloatingDock } from "../components/Footer";
@@ -50,8 +49,8 @@ export default function LandingPage() {
           />
         </div>
         <div className="flex flex-row items-center gap-2 w-auto justify-end ml-auto">
-          <Button className="px-2 py-1 text-xs">LOGIN</Button>
-          <Button className="px-2 py-1 text-xs">Sign Up</Button>
+          <button className="px-2 py-1 text-xs font-mono rounded-lg bg-white/10 border border-white/30 text-white hover:bg-white/20 transition-colors">LOGIN</button>
+          <button className="px-2 py-1 text-xs font-mono rounded-lg bg-white/10 border border-white/30 text-white hover:bg-white/20 transition-colors">Sign Up</button>
         </div>
       </div>
 
@@ -89,8 +88,8 @@ export default function LandingPage() {
         </nav>
         {/* Auth Buttons */}
         <div className="flex gap-2 ml-8">
-          <Button className="px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm">LOGIN</Button>
-          <Button className="px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm">Sign Up</Button>
+          <button className="px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm font-mono rounded-lg bg-white/10 border border-white/30 text-white hover:bg-white/20 transition-colors">LOGIN</button>
+          <button className="px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm font-mono rounded-lg bg-white/10 border border-white/30 text-white hover:bg-white/20 transition-colors">Sign Up</button>
         </div>
       </div>
 
