@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextGenerateEffect } from './text-generate-effect';
 
-const Input = () => {
-  const [value, setValue] = useState("");
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  onSend?: (value: string) => void;
+};
+
+const Input = (props: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [caretPos, setCaretPos] = useState(0);
   const [caretCoords, setCaretCoords] = useState({ left: 0, top: 0 });
@@ -28,7 +31,7 @@ const Input = () => {
     if (!inputRef.current || !mirrorRef.current || !containerRef.current) return;
     const caret = inputRef.current.selectionStart || 0;
     setCaretPos(caret);
-    mirrorRef.current.textContent = value.slice(0, caret);
+    mirrorRef.current.textContent = (props.value || "").slice(0, caretPos);
     const mirrorRect = mirrorRef.current.getBoundingClientRect();
     const containerRect = containerRef.current.getBoundingClientRect();
     setCaretCoords({
@@ -39,12 +42,12 @@ const Input = () => {
 
   useEffect(() => {
     updateCaret();
-    // eslint-disable-next-line
-  }, [value, fontSize]);
+    // eslint-disable-next-lineconst showEffect = !isFocused && (!props.value || props.value.length === 0);
+  }, [props.value, fontSize]);
 
   // Effect to re-render TextGenerateEffect while NOT focused
   useEffect(() => {
-    if (!isFocused) {
+    if (!isFocused ) {
       intervalRef.current = setInterval(() => {
         setEffectKey(prev => prev + 1);
       }, 3500); // Slower pace
@@ -57,7 +60,10 @@ const Input = () => {
   }, [isFocused]);
 
   // Show effect only when NOT focused
-  const showEffect = !isFocused;
+  const showEffect = !isFocused && (!props.value || props.value.length === 0);
+
+  // Destructure onFocus and merge with internal logic
+  const { onFocus, onSend, ...rest } = props;
 
   return (
     <div className="w-full py-4">
@@ -75,7 +81,7 @@ const Input = () => {
             }}
             aria-hidden="true"
           >
-            {value.slice(0, caretPos)}
+            {(props.value || "").slice(0, caretPos)}
           </span>
           {/* TextGenerateEffect at caret position */}
           {showEffect && (
@@ -97,18 +103,20 @@ const Input = () => {
           <input
             ref={inputRef}
             type="text"
-            className="font-mono font-semibold tracking-wide text-lg flex-1 bg-transparent outline-none text-white placeholder:text-gray-400 px-6 py-4 rounded-lg"
-            value={value}
-            onChange={e => setValue(e.target.value)}
+            className="font-mono font-semibold tracking-wide text-xl flex-1 bg-transparent outline-none text-white placeholder:text-gray-400 px-8 py-5 rounded-xl"
+            value={props.value || ""}
+            onChange={props.onChange}
             onFocus={e => {
               setIsFocused(true);
               setTimeout(updateCaret, 0);
+              if (onFocus) onFocus(e); // Call parent onFocus if provided
             }}
             onBlur={() => setIsFocused(false)}
             onClick={updateCaret}
             onKeyUp={updateCaret}
             onSelect={updateCaret}
             style={{ fontSize }}
+            {...rest}
           />
           <div className="h-12 bg-black rounded-b-xl">
             <div className="absolute left-3 bottom-3 flex items-center gap-2">
@@ -118,7 +126,11 @@ const Input = () => {
                   <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                 </svg>
               </label>
-              <button className="rounded-full flex items-center gap-2 px-1.5 py-1 border h-8 cursor-pointer bg-sky-500/15 hover:bg-sky-500/20 border-sky-400 text-sky-500 font-mono font-semibold tracking-wide text-sm" type="button">
+              <button
+                className="rounded-full flex items-center gap-2 px-1.5 py-1 border h-8 cursor-pointer bg-sky-500/15 hover:bg-sky-500/20 border-sky-400 text-sky-500 font-mono font-semibold tracking-wide text-sm"
+                type="button"
+                onClick={() => onSend && onSend(props.value || "")}
+              >
                 <div className="w-4 h-4 flex items-center justify-center shrink-0">
                   <svg className="text-sky-500" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
                     <circle r={10} cy={12} cx={12} />
@@ -142,6 +154,6 @@ const Input = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Input;

@@ -41,13 +41,14 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
     (width: number, height: number): StarProps[] => {
       const area = width * height;
       const numStars = Math.floor(area * starDensity);
+      const isMobile = width < 640;
       return Array.from({ length: numStars }, () => {
         const shouldTwinkle =
           allStarsTwinkle || Math.random() < twinkleProbability;
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          radius: Math.random() * 0.05 + 0.5,
+          radius: (isMobile ? 2.2 : 0.5) + Math.random() * (isMobile ? 0.25 : 0.08),
           opacity: Math.random() * 0.5 + 0.5,
           twinkleSpeed: shouldTwinkle
             ? minTwinkleSpeed +
@@ -110,6 +111,12 @@ export const StarsBackground: React.FC<StarBackgroundProps> = ({
       stars.forEach((star) => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        if (window.innerWidth < 640) {
+          ctx.shadowColor = "white";
+          ctx.shadowBlur = 32;
+        } else {
+          ctx.shadowBlur = 0;
+        }
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.fill();
  
