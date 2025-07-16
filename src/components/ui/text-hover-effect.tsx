@@ -1,8 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { cn } from "../../lib/utils";
-
 
 export const TextHoverEffect = ({
   text,
@@ -89,24 +87,13 @@ export const TextHoverEffect = ({
           />
         </mask>
       </defs>
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        strokeWidth="0.3"
-        className="fill-transparent stroke-neutral-200 font-[helvetica] text-7xl font-bold dark:stroke-neutral-800"
-        style={{ opacity: hovered ? 0.7 : 0 }}
-      >
-        {text}
-      </text>
       <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
         strokeWidth="0.3"
-        className="fill-transparent stroke-neutral-200 font-[helvetica] text-7xl font-bold dark:stroke-neutral-800"
+        className="fill-transparent stroke-neutral-200 font-[helvetica] text-4xl sm:text-5xl md:text-7xl font-bold dark:stroke-neutral-800"
         initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
         animate={{
           strokeDashoffset: 0,
@@ -119,18 +106,6 @@ export const TextHoverEffect = ({
       >
         {text}
       </motion.text>
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        stroke="url(#textGradient)"
-        strokeWidth="0.3"
-        mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-7xl font-bold"
-      >
-        {text}
-      </text>
     </svg>
   );
 };
