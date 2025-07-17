@@ -33,8 +33,9 @@ export function ScriptCopyBtn({
   useEffect(() => {
     async function loadHighlightedCode() {
       try {
-        const { codeToHtml } = await import("shiki");
-        const highlighted = await codeToHtml(command, {
+        // Dynamically import shiki only on the client side
+        const shiki = await import("shiki");
+        const highlighted = await shiki.codeToHtml(command, {
           lang: codeLanguage,
           themes: {
             light: lightTheme,
@@ -75,9 +76,8 @@ export function ScriptCopyBtn({
                     {index > 0 && (
                       <div className="h-4 w-px bg-border" aria-hidden="true" />
                     )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
+                    <button
+                      type="button"
                       className={`relative rounded-none bg-background px-2 py-1 hover:bg-background ${
                         packageManager === pm
                           ? "text-primary"
@@ -89,7 +89,6 @@ export function ScriptCopyBtn({
                       {packageManager === pm && (
                         <motion.div
                           className="absolute inset-x-0 bottom-[1px] mx-auto h-0.5 w-[90%] bg-primary"
-                          layoutId="activeTab"
                           initial={false}
                           transition={{
                             type: "spring",
@@ -98,7 +97,7 @@ export function ScriptCopyBtn({
                           }}
                         />
                       )}
-                    </Button>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -120,9 +119,8 @@ export function ScriptCopyBtn({
               </pre>
             )}
           </div>
-          <Button
-            variant="outline"
-            size="icon"
+          <button
+            type="button"
             className="relative ml-2 rounded-md"
             onClick={copyToClipboard}
             aria-label={copied ? "Copied" : "Copy to clipboard"}
@@ -138,7 +136,7 @@ export function ScriptCopyBtn({
                 copied ? "scale-100" : "scale-0"
               }`}
             />
-          </Button>
+          </button>
         </div>
       </div>
     </div>

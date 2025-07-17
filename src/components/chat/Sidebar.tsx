@@ -2,7 +2,8 @@
 import { cn } from "../../lib/utils";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import { IconMenu2, IconX, IconMessage } from "@tabler/icons-react";
+import { StarsBackground } from "../ui/stars-background";
 
 interface Links {
   label: string;
@@ -73,35 +74,57 @@ export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
   return (
     <>
       <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<"div">)} />
+      <MobileSidebar />
     </>
   );
 };
 
 export const DesktopSidebar = ({
   className,
-  children,
   ...props
 }: React.ComponentProps<typeof motion.div>) => {
   const { open, setOpen, animate } = useSidebar();
   return (
-    <>
+    <div className="relative h-full w-full">
+      {/* Vertical divider line for desktop only, always visible, now on the right */}
+      <div className="absolute top-[15px] bottom-[15px] right-0 h-auto w-[1px] bg-gray-400 z-50 hidden md:block" />
       <motion.div
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] shrink-0",
+          "h-full px-4 py-4 hidden md:flex md:flex-col w-[300px] shrink-0 relative z-10 bg-transparent",
           className
         )}
         animate={{
           width: animate ? (open ? "300px" : "60px") : "300px",
         }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 30,
+        }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         {...props}
       >
-        {children}
+        {open ? (
+          <div className="flex flex-col gap-4 mt-8">
+            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2 whitespace-nowrap">
+              <IconMessage className="inline-block" size={22} />
+              Previous chats
+            </h2>
+            {/* Map over last 7 chats here */}
+            <div className="flex flex-col gap-2">
+              <span className="text-white/80 text-sm italic">No chats yet</span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center mt-8 ml-1">
+            <IconMessage className="text-white" size={22} />
+          </div>
+        )}
       </motion.div>
-    </>
+    </div>
   );
+  
 };
 
 export const MobileSidebar = ({
@@ -114,13 +137,14 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between w-full relative bg-transparent"
         )}
         {...props}
       >
+        <StarsBackground className="!w-full !h-full !fixed !inset-0 !z-0" />
         <div className="flex justify-end z-20 w-full">
           <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
+            className="text-white"
             onClick={() => setOpen(!open)}
           />
         </div>
@@ -135,17 +159,24 @@ export const MobileSidebar = ({
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+                "fixed h-full w-full inset-0 p-10 z-[100] flex flex-col justify-between bg-transparent",
                 className
               )}
             >
               <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+                className="absolute right-10 top-10 z-50 text-white"
                 onClick={() => setOpen(!open)}
               >
                 <IconX />
               </div>
-              {children}
+              <div className="flex flex-col gap-4 mt-8">
+                <h2 className="text-lg font-semibold text-white mb-4">Previous chats</h2>
+                {/* TODO: Map over last 7 chats here */}
+                <div className="flex flex-col gap-2">
+                  {/* Example placeholder */}
+                  <span className="text-white/80 text-sm italic">No chats yet</span>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
