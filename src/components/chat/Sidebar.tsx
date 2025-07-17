@@ -4,6 +4,7 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX, IconMessage } from "@tabler/icons-react";
 import { StarsBackground } from "../ui/stars-background";
+import { useUser, UserButton } from "@clerk/nextjs";
 
 interface Links {
   label: string;
@@ -84,6 +85,7 @@ export const DesktopSidebar = ({
   ...props
 }: React.ComponentProps<typeof motion.div>) => {
   const { open, setOpen, animate } = useSidebar();
+  const { user } = useUser();
   return (
     <div className="relative h-full w-full">
       {/* Vertical divider line for desktop only, always visible, now on the right */}
@@ -106,7 +108,7 @@ export const DesktopSidebar = ({
         {...props}
       >
         {open ? (
-          <div className="flex flex-col gap-4 mt-8">
+          <div className="flex flex-col gap-4 mt-8 h-full">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2 whitespace-nowrap">
               <IconMessage className="inline-block" size={22} />
               Previous chats
@@ -115,10 +117,31 @@ export const DesktopSidebar = ({
             <div className="flex flex-col gap-2">
               <span className="text-white/80 text-sm italic">No chats yet</span>
             </div>
+            <div className="flex-1" />
+            {/* User info at the bottom */}
+            {user && (
+              <div className="flex items-center gap-3 p-3">
+                <img
+                  src={user.imageUrl}
+                  alt="User profile"
+                  className="w-8 h-8 rounded-full border border-gray-500"
+                />
+                <span className="text-white text-sm font-medium">
+                  {user.username || user.fullName || user.primaryEmailAddress?.emailAddress}
+                </span>
+              </div>
+            )}
           </div>
         ) : (
-          <div className="flex items-center mt-8 ml-1">
-            <IconMessage className="text-white" size={22} />
+          <div className="flex flex-col items-center mt-8 h-full">
+            <div className="flex-1" />
+            {user && (
+              <img
+                src={user.imageUrl}
+                alt="User profile"
+                className="w-8 h-8 rounded-full border border-gray-500 mb-4"
+              />
+            )}
           </div>
         )}
       </motion.div>

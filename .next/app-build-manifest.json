@@ -12,10 +12,15 @@
       "static/css/app/page.css",
       "static/chunks/app/page.js"
     ],
-    "/chat/page": [
+    "/chat/[user]/[chatid]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/chat/page.js"
+      "static/chunks/app/chat/[user]/[chatid]/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

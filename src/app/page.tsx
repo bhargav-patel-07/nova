@@ -32,6 +32,7 @@ import {
 import { TextHoverEffect } from "../components/ui/text-hover-effect";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 const dockItems = [
   { title: "Portfolio", icon: <IconUser />, href: "https://bhargavpatel.vercel.app/" },
@@ -49,9 +50,10 @@ export default function LandingPage() {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   const customCommandMap = {
-    GIT: "git clone --recursive --force https://github.com/bhargav-patel-07/nova.ai.git",
+    GIT: "git clone https://github.com/bhargav-patel-07/nova.ai.git",
     
   };
   
@@ -62,6 +64,12 @@ export default function LandingPage() {
     window.addEventListener("hashchange", updateHash);
     return () => window.removeEventListener("hashchange", updateHash);
   }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/chat/user");
+    }
+  }, [isSignedIn, router]);
 
   const handleInputFocus = () => {
     if (inputWrapperRef.current) {

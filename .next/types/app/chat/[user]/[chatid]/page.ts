@@ -1,8 +1,8 @@
-// File: C:\Users\BHARGAV\Downloads\gpt-clone\src\app\chat\page.tsx
-import * as entry from '../../../../src/app/chat/page.js'
+// File: C:\Users\BHARGAV\Downloads\gpt-clone\src\app\chat\[user]\[chatid]\page.tsx
+import * as entry from '../../../../../../src/app/chat/[user]/[chatid]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../src/app/chat/page.js')
+type TEntry = typeof import('../../../../../../src/app/chat/[user]/[chatid]/page.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

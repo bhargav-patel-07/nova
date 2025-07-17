@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { Sidebar, SidebarBody } from "../../components/chat/Sidebar";
+import { Sidebar, SidebarBody } from "../../../../components/chat/Sidebar";
 
 export default function ChatPage() {
   const [open, setOpen] = useState(true); // or false for closed
