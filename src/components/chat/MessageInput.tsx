@@ -61,7 +61,7 @@ const MessageInput = (props: InputProps) => {
   }, [isFocused]);
 
   // Show effect only when NOT focused
-  const showEffect = !isFocused && (!props.value || props.value.length === 0);
+  const showEffect = !isFocused && (String(props.value || "").length === 0);
 
   // Destructure onFocus and merge with internal logic
   const { onFocus, onSend, ...rest } = props;
