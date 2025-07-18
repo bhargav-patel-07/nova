@@ -82,7 +82,7 @@ const MessageInput = (props: InputProps) => {
             }}
             aria-hidden="true"
           >
-            {(props.value || "").slice(0, caretPos)}
+            {String(props.value || "").slice(0, caretPos)}
           </span>
           {/* TextGenerateEffect at caret position */}
           {showEffect && (
