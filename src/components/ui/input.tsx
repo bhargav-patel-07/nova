@@ -31,7 +31,7 @@ const Input = (props: InputProps) => {
     if (!inputRef.current || !mirrorRef.current || !containerRef.current) return;
     const caret = inputRef.current.selectionStart || 0;
     setCaretPos(caret);
-    mirrorRef.current.textContent = (props.value || "").slice(0, caretPos);
+    mirrorRef.current.textContent = String(props.value || "").slice(0, caretPos);
     const mirrorRect = mirrorRef.current.getBoundingClientRect();
     const containerRect = containerRef.current.getBoundingClientRect();
     setCaretCoords({
@@ -60,7 +60,7 @@ const Input = (props: InputProps) => {
   }, [isFocused]);
 
   // Show effect only when NOT focused
-  const showEffect = !isFocused && (!props.value || props.value.length === 0);
+  const showEffect = !isFocused && (String(props.value || "").length === 0);
 
   // Destructure onFocus and merge with internal logic
   const { onFocus, onSend, ...rest } = props;
@@ -81,7 +81,7 @@ const Input = (props: InputProps) => {
             }}
             aria-hidden="true"
           >
-            {(props.value || "").slice(0, caretPos)}
+            {String(props.value || "").slice(0, caretPos)}
           </span>
           {/* TextGenerateEffect at caret position */}
           {showEffect && (
@@ -104,7 +104,7 @@ const Input = (props: InputProps) => {
             ref={inputRef}
             type="text"
             className="font-mono font-semibold tracking-wide text-xl flex-1 bg-transparent outline-none text-white placeholder:text-gray-400 px-8 py-5 rounded-xl"
-            value={props.value || ""}
+            value={String(props.value || "")}
             onChange={props.onChange}
             onFocus={e => {
               setIsFocused(true);
@@ -129,7 +129,7 @@ const Input = (props: InputProps) => {
               <button
                 className="rounded-full flex items-center gap-2 px-1.5 py-1 border h-8 cursor-pointer bg-sky-500/15 hover:bg-sky-500/20 border-sky-400 text-sky-500 font-mono font-semibold tracking-wide text-sm"
                 type="button"
-                onClick={() => onSend && onSend(props.value || "")}
+                onClick={() => onSend && onSend(String(props.value || ""))}
               >
                 <div className="w-4 h-4 flex items-center justify-center shrink-0">
                   <svg className="text-sky-500" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
