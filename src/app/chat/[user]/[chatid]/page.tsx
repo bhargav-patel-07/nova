@@ -1,23 +1,14 @@
-"use client"
-import { useState } from "react";
-import { Sidebar, SidebarBody } from "../../../../components/chat/Sidebar";
+"use client";
+import { useParams } from "next/navigation";
+import ChatPage from "../../chatpage";
 
-export default function ChatPage() {
-  const [open, setOpen] = useState(true); // or false for closed
+export default function ChatSessionPage() {
+  const params = useParams();
+  const { user, chatid } = params;
 
   return (
-    <div className="flex h-screen w-full">
-      {/* Sidebar container */}
-      <div className="relative h-screen" style={{ width: open ? 300 : 60 }}>
-        <Sidebar open={open} setOpen={setOpen}>
-          <SidebarBody />
-        </Sidebar>
-        {/* Vertical divider line at the right edge of the sidebar - removed */}
-      </div>
-      {/* Main content */}
-      <div className="flex-1 h-full">
-        {/* Your main chat content here */}
-      </div>
+    <div className="h-screen w-full">
+      <ChatPage />
     </div>
   );
-} 
+}
