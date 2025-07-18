@@ -1,14 +1,22 @@
 "use client"
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Sidebar, SidebarBody } from "../../components/chat/Sidebar";
 import MessageInput from "../../components/chat/MessageInput";
 import { fetchAIResponse } from "../../utils/api";
+import MessageCard from "../../components/chat/messagecard";
 
 export default function ChatPage() {
   const [open, setOpen] = useState(true); // or false for closed
   const [messages, setMessages] = useState<{ role: 'user' | 'gemini', content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleSend = async (value: string) => {
     if (!value.trim()) return;
@@ -19,12 +27,13 @@ export default function ChatPage() {
     try {
       const res = await fetchAIResponse(value);
       console.log('Gemini API raw response:', res);
-      const geminiText = res.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(res);
+      // For OpenRouter, extract the assistant's message:
+      const assistantText = res.choices?.[0]?.message?.content || JSON.stringify(res);
       setMessages((msgs) => {
         // Replace the last Gemini placeholder with the real response
         const updated = [...msgs];
         const idx = updated.findIndex((m, i) => m.role === 'gemini' && m.content === '__LOADING__' && i === updated.length - 1);
-        if (idx !== -1) updated[idx] = { role: 'gemini', content: geminiText };
+        if (idx !== -1) updated[idx] = { role: 'gemini', content: assistantText };
         console.log('Updated messages:', updated);
         return updated;
       });
@@ -51,18 +60,15 @@ export default function ChatPage() {
       {/* Main content */}
       <div className="flex-1 h-full flex flex-col">
         {/* Chat messages area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col items-center justify-center">
           {messages.map((msg, idx) => (
-            <div key={idx} className={msg.role === 'user' ? 'text-right' : 'text-left'}>
-              <span className={msg.role === 'user' ? 'bg-sky-600 text-white px-4 py-2 rounded-lg inline-block' : 'bg-gray-200 text-black px-4 py-2 rounded-lg inline-block'}>
-                {msg.content === '__LOADING__' ? (
-                  <span className="italic text-gray-400">Gemini is typing...</span>
-                ) : (
-                  msg.content
-                )}
-              </span>
-            </div>
+            <MessageCard
+              key={idx}
+              text={msg.content === '__LOADING__' ? 'AI is typing...' : msg.content}
+              from={msg.role === 'user' ? 'user' : 'ai'}
+            />
           ))}
+          <div ref={messagesEndRef} />
         </div>
         {/* Input box at the bottom */}
         <MessageInput value={input} onChange={e => setInput(e.target.value)} onSend={handleSend} disabled={loading} />
