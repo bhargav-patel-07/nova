@@ -31,7 +31,7 @@ const Input = (props: InputProps) => {
     if (!inputRef.current || !mirrorRef.current || !containerRef.current) return;
     const caret = inputRef.current.selectionStart || 0;
     setCaretPos(caret);
-    mirrorRef.current.textContent = String(props.value || "").slice(0, caretPos);
+    mirrorRef.current.textContent = String(props.value || "").slice(0, caret);
     const mirrorRect = mirrorRef.current.getBoundingClientRect();
     const containerRect = containerRef.current.getBoundingClientRect();
     setCaretCoords({

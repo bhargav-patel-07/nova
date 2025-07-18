@@ -105,7 +105,7 @@ const MessageInput = (props: InputProps) => {
             ref={inputRef}
             type="text"
             className="font-mono font-semibold tracking-wide text-xl flex-1 bg-transparent outline-none text-white placeholder:text-gray-400 px-8 py-5 rounded-xl"
-            value={props.value || ""}
+            value={String(props.value || "")}
             onChange={props.onChange}
             onFocus={e => {
               setIsFocused(true);
