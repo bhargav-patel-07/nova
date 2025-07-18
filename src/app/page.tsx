@@ -67,7 +67,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push("/chat/user");
+      router.push("/chat/${username}/${chatid}");
     }
   }, [isSignedIn, router]);
 

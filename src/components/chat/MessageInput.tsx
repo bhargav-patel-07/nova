@@ -95,7 +95,7 @@ const MessageInput = (props: InputProps) => {
             >
               <TextGenerateEffect
                 key={effectKey}
-                words="Create Code</> or Text Seamlessly With Single Prompt...!"
+                words="Generate Code</> or Text Seamlessly With NOVA...!"
                 className="text-gray-300 tracking-wide font-light font-mono mb-0"
                 fontSize={fontSize}
               />

@@ -13,6 +13,7 @@ export default function SignUpPage() {
     if (isSignedIn && user) {
       const username = user.username || user.id || user.primaryEmailAddress?.emailAddress;
       const chatid = generateChatId();
+      console.log('Redirecting to:', `/chat/${username}/${chatid}`, { username, chatid });
       router.push(`/chat/${username}/${chatid}`);
     }
   }, [isSignedIn, user, router]);

@@ -27,7 +27,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ text, from, iconAlt }) => {
   } else if (from === 'ai') {
     icon = (
       <div className="flex items-center justify-center w-10 h-10 mr-2">
-        <img src="/logo2.png" alt={iconAlt || 'AI'} className="w-8 h-8 rounded-full bg-white/80 p-1" />
+        <img src="/logo2.png" alt={iconAlt || 'NOVA'} className="w-8 h-8 rounded-full bg-black/80 p-1" />
       </div>
     );
   }
@@ -54,7 +54,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ text, from, iconAlt }) => {
           </svg>
         </button>
         <div className={`pr-12 pl-2 py-2 text-white font-mono whitespace-pre-wrap break-words ${isUser ? 'text-right' : 'text-left'}`}>
-          {from === 'ai' && text !== 'AI is typing...' && !text.startsWith('{"error"') ? (
+          {from === 'ai' && text !== 'NOVA is typing...' && !text.startsWith('{"error"') ? (
             <TextGenerateEffect words={text} className="text-white" fontSize={18} />
           ) : (
             text

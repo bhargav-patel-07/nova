@@ -64,7 +64,7 @@ export default function ChatPage() {
           {messages.map((msg, idx) => (
             <MessageCard
               key={idx}
-              text={msg.content === '__LOADING__' ? 'AI is typing...' : msg.content}
+              text={msg.content === '__LOADING__' ? 'NOVA is typing...' : msg.content}
               from={msg.role === 'user' ? 'user' : 'ai'}
             />
           ))}

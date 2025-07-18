@@ -4,7 +4,8 @@ import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX, IconMessage } from "@tabler/icons-react";
 import { StarsBackground } from "../ui/stars-background";
-import { useUser, UserButton } from "@clerk/nextjs";
+import { useUser, UserButton, SignOutButton } from "@clerk/nextjs";
+import { IconLogout } from '@tabler/icons-react';
 
 interface Links {
   label: string;
@@ -86,6 +87,7 @@ export const DesktopSidebar = ({
 }: React.ComponentProps<typeof motion.div>) => {
   const { open, setOpen, animate } = useSidebar();
   const { user } = useUser();
+  console.log('Sidebar user:', user);
   return (
     <div className="relative h-full w-full">
       {/* Vertical divider line for desktop only, always visible, now on the right */}
@@ -120,28 +122,43 @@ export const DesktopSidebar = ({
             <div className="flex-1" />
             {/* User info at the bottom */}
             {user && (
-              <div className="flex items-center gap-3 p-3">
-                <img
-                  src={user.imageUrl}
-                  alt="User profile"
-                  className="w-8 h-8 rounded-full border border-gray-500"
-                />
-                <span className="text-white text-sm font-medium">
-                  {user.username || user.fullName || user.primaryEmailAddress?.emailAddress}
-                </span>
+              <div className="flex flex-col items-start gap-1 p-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={user.imageUrl}
+                    alt="User profile"
+                    className="w-8 h-8 rounded-full border border-gray-500"
+                  />
+                  <span className="text-white text-sm font-medium">
+                    {user.username || user.fullName || user.primaryEmailAddress?.emailAddress}
+                  </span>
+                </div>
+                {/* Sign Out button below the profile info, with extra spacing */}
+                <SignOutButton>
+                  <button className="mt-12 flex items-center gap-4 text-white/80 hover:text-red-500 transition-colors">
+                    <IconLogout size={20} />
+                    {open && <span className="text-sm">Sign out</span>}
+                  </button>
+                </SignOutButton>
               </div>
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center mt-8 h-full">
-            <div className="flex-1" />
+          <div className="flex flex-col items-center justify-end h-full pb-6 gap-6">
+            {/* Only icons, vertically aligned at the bottom */}
+            <IconMessage className="text-white" size={22} />
             {user && (
               <img
                 src={user.imageUrl}
                 alt="User profile"
-                className="w-8 h-8 rounded-full border border-gray-500 mb-4"
+                className="w-8 h-8 rounded-full border border-gray-500"
               />
             )}
+            <SignOutButton>
+              <button className="flex items-center justify-center text-white/80 hover:text-red-500 transition-colors">
+                <IconLogout size={20} />
+              </button>
+            </SignOutButton>
           </div>
         )}
       </motion.div>
