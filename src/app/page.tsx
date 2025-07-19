@@ -50,7 +50,7 @@ export default function LandingPage() {
   const inputWrapperRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const router = useRouter();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId } = useAuth();
 
   const customCommandMap = {
     GIT: "git clone https://github.com/bhargav-patel-07/nova.ai.git",
@@ -120,6 +120,17 @@ export default function LandingPage() {
       rzp.open();
     });
   }, []);
+
+  // Custom send handler for Input
+  const handleInputSend = () => {
+    if (!isSignedIn) {
+      // Show sign-in modal (or redirect to sign-in page)
+      document.querySelector('[data-sign-in-button]')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      return;
+    }
+    // Redirect to chat page (replace with actual user/chatid if available)
+    router.push(`/chat/${userId}/default`);
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -228,7 +239,7 @@ export default function LandingPage() {
       value={input}
       onChange={e => setInput(e.target.value)}
       onFocus={handleInputFocus}
-      onSend={() => router.push("/chat")}
+      onSend={handleInputSend}
       placeholder=""
     />
   </div>
