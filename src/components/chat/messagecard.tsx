@@ -39,8 +39,8 @@ const MessageCard: React.FC<MessageCardProps> = ({ text, from, iconAlt }) => {
       {/* Icon on the left or right */}
       {icon}
       <div
-        className="relative bg-white/10 border border-white/20 rounded-xl shadow-md p-4 mx-auto"
-        style={{ width: 800, minHeight: 60, wordBreak: 'break-word' }}
+        className="relative bg-white/10 border border-white/20 rounded-xl shadow-md p-4 mx-auto w-full max-w-full break-words overflow-x-auto"
+        style={{ minHeight: 60 }}
       >
         {/* Copy button at top left for user, top right for ai */}
         <button

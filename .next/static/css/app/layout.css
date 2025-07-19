@@ -604,6 +604,9 @@ video {
 .left-3 {
   left: 0.75rem;
 }
+.left-4 {
+  left: 1rem;
+}
 .right-0 {
   right: 0px;
 }
@@ -621,6 +624,9 @@ video {
 }
 .top-2 {
   top: 0.5rem;
+}
+.top-4 {
+  top: 1rem;
 }
 .top-\[15px\] {
   top: 15px;
@@ -691,6 +697,9 @@ video {
 }
 .mt-12 {
   margin-top: 3rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
 }
 .mt-4 {
   margin-top: 1rem;
@@ -844,6 +853,9 @@ video {
 .max-w-\[220px\] {
   max-width: 220px;
 }
+.max-w-full {
+  max-width: 100%;
+}
 .max-w-md {
   max-width: 28rem;
 }
@@ -911,9 +923,6 @@ video {
 .items-center {
   align-items: center;
 }
-.items-stretch {
-  align-items: stretch;
-}
 .justify-start {
   justify-content: flex-start;
 }
@@ -943,6 +952,9 @@ video {
 }
 .gap-6 {
   gap: 1.5rem;
+}
+.gap-\[3px\] {
+  gap: 3px;
 }
 .gap-y-0 {
   row-gap: 0px;
@@ -1029,6 +1041,9 @@ video {
 .border-t {
   border-top-width: 1px;
 }
+.border-none {
+  border-style: none;
+}
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
@@ -1063,6 +1078,9 @@ video {
 }
 .bg-black\/80 {
   background-color: rgb(0 0 0 / 0.8);
+}
+.bg-black\/90 {
+  background-color: rgb(0 0 0 / 0.9);
 }
 .bg-gray-100 {
   --tw-bg-opacity: 1;
@@ -1128,9 +1146,6 @@ video {
 }
 .p-1 {
   padding: 0.25rem;
-}
-.p-10 {
-  padding: 2.5rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -1218,6 +1233,9 @@ video {
 }
 .pt-1 {
   padding-top: 0.25rem;
+}
+.pt-10 {
+  padding-top: 2.5rem;
 }
 .text-left {
   text-align: left;
@@ -1366,9 +1384,6 @@ video {
 }
 .ring-white\/10 {
   --tw-ring-color: rgb(255 255 255 / 0.1);
-}
-.ring-white\/20 {
-  --tw-ring-color: rgb(255 255 255 / 0.2);
 }
 .blur {
   --tw-blur: blur(8px);
@@ -1557,6 +1572,10 @@ video {
     display: none;
   }
 
+  .sm\:max-w-2xl {
+    max-width: 42rem;
+  }
+
   .sm\:max-w-\[110px\] {
     max-width: 110px;
   }
@@ -1577,6 +1596,11 @@ video {
   .sm\:px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+  }
+
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .sm\:py-1\.5 {
@@ -1657,6 +1681,10 @@ video {
 
   .md\:items-stretch {
     align-items: stretch;
+  }
+
+  .md\:gap-6 {
+    gap: 1.5rem;
   }
 
   .md\:gap-y-0 {

@@ -236,19 +236,21 @@ export default function LandingPage() {
 
 
       {/* 2. About Section */}
-<section id="about" className="min-h-screen flex flex-col items-start justify-start">
-        <ScriptCopyBtn
-    showMultiplePackageOptions={true}
-    codeLanguage="shell"
-    lightTheme="nord"
-    darkTheme="vitesse-dark"
-    commandMap={customCommandMap}
-    className="mt-8 w-full max-w-xl overflow-x-auto"
-  />
+<section id="about" className="min-h-screen flex flex-col items-center justify-start">
+  <div className="w-full flex justify-center mt-8">
+    <ScriptCopyBtn
+      showMultiplePackageOptions={true}
+      codeLanguage="shell"
+      lightTheme="nord"
+      darkTheme="vitesse-dark"
+      commandMap={customCommandMap}
+      className="w-full max-w-xs"
+    />
+  </div>
   {/* Pricing Section */}
-  <div className="w-full flex flex-col md:flex-row gap-6 justify-center items-stretch mt-8">
+  <div className="w-full flex flex-row gap-[3px] md:gap-6 justify-center items-center mt-8">
     {/* Free Plan */}
-    <div className="flex-1 flex flex-col bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl p-6 min-w-[200px] max-w-xs ring-1 ring-white/20">
+    <div className="flex-1 flex flex-col bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl p-6 min-w-[200px] max-w-xs mx-auto">
       <h3 className="text-2xl font-bold mb-2 text-white text-center">Free</h3>
       <div className="text-4xl font-extrabold mb-4 text-white text-center">$0<span className="text-lg font-medium">/mo</span></div>
       <ul className="mb-6 text-white/80 space-y-2 text-sm flex-1">
@@ -266,7 +268,7 @@ export default function LandingPage() {
       </div>
     </div>
     {/* Plus Plan */}
-    <div className="flex-1 flex flex-col bg-white/20 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl p-6 min-w-[200px] max-w-xs ring-1 ring-white/20">
+    <div className="flex-1 flex flex-col bg-white/20 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl p-6 min-w-[200px] max-w-xs mx-auto">
       <h3 className="text-2xl font-bold mb-2 text-white text-center">Plus</h3>
       <div className="text-4xl font-extrabold mb-4 text-white text-center">$9<span className="text-lg font-medium">/mo</span></div>
       <ul className="mb-6 text-white/90 space-y-2 text-sm flex-1">

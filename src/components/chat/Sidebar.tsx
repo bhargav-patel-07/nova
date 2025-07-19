@@ -76,7 +76,7 @@ export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
   return (
     <>
       <DesktopSidebar {...props} />
-      <MobileSidebar />
+      {/* MobileSidebar will be rendered in main content, not here */}
     </>
   );
 };
@@ -170,24 +170,28 @@ export const DesktopSidebar = ({
 export const MobileSidebar = ({
   className,
   children,
+  open,
+  setOpen,
   ...props
-}: React.ComponentProps<"div">) => {
-  const { open, setOpen } = useSidebar();
+}: React.ComponentProps<"div"> & { open: boolean; setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const { user } = useUser();
   return (
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between w-full relative bg-transparent"
+          "px-4 py-4 flex flex-row md:hidden items-center w-full relative bg-transparent"
         )}
         {...props}
       >
         <StarsBackground className="!w-full !h-full !fixed !inset-0 !z-0" />
-        <div className="flex justify-end z-20 w-full">
-          <IconMenu2
-            className="text-white"
-            onClick={() => setOpen(!open)}
-          />
-        </div>
+        {/* Menu button absolutely at top left */}
+        <button
+          className="fixed top-4 left-4 z-50 bg-transparent border-none p-0 m-0"
+          style={{ lineHeight: 0 }}
+          onClick={() => setOpen(!open)}
+        >
+          <IconMenu2 className="text-white" />
+        </button>
         <AnimatePresence>
           {open && (
             <motion.div
@@ -199,23 +203,49 @@ export const MobileSidebar = ({
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 p-10 z-[100] flex flex-col justify-between bg-transparent",
+                "fixed inset-0 h-full w-full z-[100] flex flex-col justify-between bg-black/90",
                 className
               )}
             >
-              <div
-                className="absolute right-10 top-10 z-50 text-white"
-                onClick={() => setOpen(!open)}
-              >
-                <IconX />
-              </div>
-              <div className="flex flex-col gap-4 mt-8">
-                <h2 className="text-lg font-semibold text-white mb-4">Previous chats</h2>
+              {/* Top section: previous chats heading with chat icon */}
+              <div className="flex flex-col gap-4 mt-8 px-6">
+                <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <IconMessage className="text-white" size={22} />
+                  Previous chats
+                </h2>
                 {/* TODO: Map over last 7 chats here */}
                 <div className="flex flex-col gap-2">
                   {/* Example placeholder */}
                   <span className="text-white/80 text-sm italic">No chats yet</span>
                 </div>
+              </div>
+              {/* Bottom section: profile and sign out */}
+              {user && (
+                <div className="w-full flex flex-col items-center gap-2 p-6 absolute bottom-0 left-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src={user.imageUrl}
+                      alt="User profile"
+                      className="w-8 h-8 rounded-full border border-gray-500"
+                    />
+                    <span className="text-white text-sm font-medium">
+                      {user.username || user.fullName || user.primaryEmailAddress?.emailAddress}
+                    </span>
+                  </div>
+                  <SignOutButton>
+                    <button className="flex items-center gap-2 text-white/80 hover:text-red-500 transition-colors">
+                      <IconLogout size={20} />
+                      <span className="text-sm">Sign out</span>
+                    </button>
+                  </SignOutButton>
+                </div>
+              )}
+              {/* Close button */}
+              <div
+                className="absolute right-10 top-10 z-50 text-white"
+                onClick={() => setOpen(!open)}
+              >
+                <IconX />
               </div>
             </motion.div>
           )}

@@ -68,7 +68,7 @@ const MessageInput = (props: InputProps) => {
 
   return (
     <div className="w-full py-4">
-      <div className="relative max-w-2xl w-full mx-auto border border-white rounded-xl">
+      <div className="relative w-full sm:max-w-2xl mx-auto border border-white rounded-xl sm:px-4">
         <div className="relative flex flex-col bg-black/5" ref={containerRef}>
           {/* Mirror span for caret position calculation */}
           <span
@@ -150,7 +150,16 @@ const MessageInput = (props: InputProps) => {
               </button>
             </div>
             <div className="absolute right-3 bottom-3">
-              <button className="rounded-lg p-2 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white cursor-pointer transition-colors font-mono font-semibold tracking-wide text-sm" type="button">
+              <button
+                className="rounded-lg p-2 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white cursor-pointer transition-colors font-mono font-semibold tracking-wide text-sm"
+                type="button"
+                onClick={() => {
+                  console.log('Send button clicked', props.value);
+                  props.onSend && props.onSend(String(props.value || ""));
+                }}
+                disabled={props.disabled}
+                style={{ border: '2px solid red', zIndex: 9999, position: 'relative' }}
+              >
                 <svg strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
                   <path d="m22 2-7 20-4-9-9-4Z" />
                   <path d="M22 2 11 13" />

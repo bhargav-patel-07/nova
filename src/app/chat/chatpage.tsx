@@ -1,16 +1,18 @@
 "use client"
 import { useRef, useEffect, useState } from "react";
-import { Sidebar, SidebarBody } from "../../components/chat/Sidebar";
+import { Sidebar, SidebarBody, MobileSidebar, SidebarProvider } from "../../components/chat/Sidebar";
 import MessageInput from "../../components/chat/MessageInput";
 import { fetchAIResponse } from "../../utils/api";
 import MessageCard from "../../components/chat/messagecard";
 
 export default function ChatPage() {
-  const [open, setOpen] = useState(true); // or false for closed
+  const [open, setOpen] = useState(true); // for desktop sidebar
+  const [mobileOpen, setMobileOpen] = useState(false); // for mobile sidebar
   const [messages, setMessages] = useState<{ role: 'user' | 'gemini', content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -19,6 +21,7 @@ export default function ChatPage() {
   }, [messages]);
 
   const handleSend = async (value: string) => {
+    console.log('handleSend called with:', value);
     if (!value.trim()) return;
     // Add user message and a placeholder for Gemini's response
     setMessages((msgs) => [...msgs, { role: 'user', content: value }, { role: 'gemini', content: '__LOADING__' }]);
@@ -49,30 +52,49 @@ export default function ChatPage() {
     }
   };
 
+  // Handler to scroll input into view on focus (for mobile)
+  const handleInputFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   return (
     <div className="flex h-screen w-full">
-      {/* Sidebar container */}
-      <div className="relative h-screen" style={{ width: open ? 300 : 60 }}>
+      {/* Sidebar container (desktop only) */}
+      <div className="relative h-screen hidden md:block" style={{ width: open ? 300 : 60 }}>
         <Sidebar open={open} setOpen={setOpen}>
           <SidebarBody />
         </Sidebar>
       </div>
       {/* Main content */}
-      <div className="flex-1 h-full flex flex-col">
-        {/* Chat messages area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col items-center justify-center">
-          {messages.map((msg, idx) => (
-            <MessageCard
-              key={idx}
-              text={msg.content === '__LOADING__' ? 'NOVA is typing...' : msg.content}
-              from={msg.role === 'user' ? 'user' : 'ai'}
+      <SidebarProvider open={open} setOpen={setOpen} animate={true}>
+        <div className="flex-1 h-full flex flex-col">
+          {/* Mobile sidebar menu button at the top for mobile view */}
+          <MobileSidebar open={mobileOpen} setOpen={setMobileOpen} />
+          {/* Chat messages area */}
+          <div className="flex-1 overflow-y-auto p-4 pb-24 space-y-4 flex flex-col items-center justify-center">
+            {messages.map((msg, idx) => (
+              <MessageCard
+                key={idx}
+                text={msg.content === '__LOADING__' ? 'NOVA is typing...' : msg.content}
+                from={msg.role === 'user' ? 'user' : 'ai'}
+              />
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+          {/* Input box at the bottom */}
+          <div ref={inputRef as any}>
+            <MessageInput
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onSend={handleSend}
+              disabled={loading}
+              onFocus={handleInputFocus}
             />
-          ))}
-          <div ref={messagesEndRef} />
+          </div>
         </div>
-        {/* Input box at the bottom */}
-        <MessageInput value={input} onChange={e => setInput(e.target.value)} onSend={handleSend} disabled={loading} />
-      </div>
+      </SidebarProvider>
     </div>
   );
 } 
