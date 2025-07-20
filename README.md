@@ -4,6 +4,13 @@ Welcome to **Nova** — your next-generation AI chat companion. Nova is a beauti
 
 ---
 
+## 🌐 Routes
+
+- Main App: [https://nova-new.vercel.app/](https://nova-new.vercel.app/)
+- Chat Route: [https://nova-new.vercel.app/chat/user/chatid](https://nova-new.vercel.app/chat/user/chatid)
+
+---
+
 ## 🧩 Tech Stack
 
 Nova is built with a modern, robust technology stack:
