@@ -7,7 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en">
         <head>
-          <link rel="icon" href="/logo3.png" type="image/png" />
+          <link rel="icon" href="/favicon.png" type="image/png" />
         </head>
         <body className="min-h-screen bg-black">
           <StarsBackground className="!fixed !inset-0 !w-full !h-full !z-0" />
