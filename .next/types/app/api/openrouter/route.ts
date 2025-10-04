@@ -1,4 +1,4 @@
-// File: C:\Users\BHARGAV\Downloads\gpt-clone\src\app\api\openrouter\route.ts
+// File: C:\Users\BHARGAV\OneDrive\Desktop\NOVA\nova\src\app\api\openrouter\route.ts
 import * as entry from '../../../../../src/app/api/openrouter/route.js'
 import type { NextRequest } from 'next/server.js'
 

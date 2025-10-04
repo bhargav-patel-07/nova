@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { TextGenerateEffect } from '../ui/text-generate-effect';
 
@@ -43,12 +42,11 @@ const MessageInput = (props: InputProps) => {
 
   useEffect(() => {
     updateCaret();
-    // eslint-disable-next-lineconst showEffect = !isFocused && (!props.value || props.value.length === 0);
   }, [props.value, fontSize]);
 
   // Effect to re-render TextGenerateEffect while NOT focused
   useEffect(() => {
-    if (!isFocused ) {
+    if (!isFocused) {
       intervalRef.current = setInterval(() => {
         setEffectKey(prev => prev + 1);
       }, 3500); // Slower pace
@@ -63,7 +61,7 @@ const MessageInput = (props: InputProps) => {
   // Show effect only when NOT focused
   const showEffect = !isFocused && (String(props.value || "").length === 0);
 
-  // Destructure onFocus and merge with internal logic
+  // Destructure onFocus and onSend and merge with internal logic
   const { onFocus, onSend, ...rest } = props;
 
   return (
@@ -127,12 +125,6 @@ const MessageInput = (props: InputProps) => {
           />
           <div className="h-12 bg-black rounded-b-xl">
             <div className="absolute left-3 bottom-3 flex items-center gap-2">
-              <label className="cursor-pointer rounded-lg p-2 bg-white/5 hover:bg-white/10">
-                <input className="hidden" type="file" />
-                <svg className="text-white/40 hover:text-white transition-colors" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
-                  <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-                </svg>
-              </label>
               <button
                 className="rounded-full flex items-center gap-2 px-1.5 py-1 border h-8 cursor-pointer bg-sky-500/15 hover:bg-sky-500/20 border-sky-400 text-sky-500 font-mono font-semibold tracking-wide text-sm"
                 type="button"
@@ -158,7 +150,6 @@ const MessageInput = (props: InputProps) => {
                   props.onSend && props.onSend(String(props.value || ""));
                 }}
                 disabled={props.disabled}
-                style={{ border: '2px solid red', zIndex: 9999, position: 'relative' }}
               >
                 <svg strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
                   <path d="m22 2-7 20-4-9-9-4Z" />

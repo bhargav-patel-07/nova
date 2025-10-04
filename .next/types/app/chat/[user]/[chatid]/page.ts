@@ -1,4 +1,4 @@
-// File: C:\Users\BHARGAV\Downloads\gpt-clone\src\app\chat\[user]\[chatid]\page.tsx
+// File: C:\Users\BHARGAV\OneDrive\Desktop\NOVA\nova\src\app\chat\[user]\[chatid]\page.tsx
 import * as entry from '../../../../../../src/app/chat/[user]/[chatid]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

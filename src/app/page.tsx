@@ -186,8 +186,7 @@ export default function LandingPage() {
     <nav className="absolute left-1/2 -translate-x-1/2 flex bg-white/10 backdrop-blur-md border border-white/30 rounded-xl px-8 py-2 space-x-2 font-mono text-base shadow-lg items-center" style={{gap: '2px'}}>
       {[
         { label: 'HOME', href: '#home' },
-        { label: 'USE', href: '#about' },
-        { label: 'PRICING', href: '#pricing' },
+        { label: 'PRICING', href: '#about' },
       ].map((item) => (
         <a
           key={item.label}
@@ -259,7 +258,7 @@ export default function LandingPage() {
     />
   </div>
   {/* Pricing Section */}
-  <div className="w-full flex flex-row gap-[3px] md:gap-6 justify-center items-center mt-8">
+  <div className="w-full flex flex-row gap-1 md:gap-2 justify-center items-center mt-8">
     {/* Free Plan */}
     <div className="flex-1 flex flex-col bg-white/10 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl p-6 min-w-[200px] max-w-xs mx-auto">
       <h3 className="text-2xl font-bold mb-2 text-white text-center">Free</h3>

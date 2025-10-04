@@ -8,7 +8,7 @@ import MessageCard from "../../components/chat/messagecard";
 export default function ChatPage() {
   const [open, setOpen] = useState(true); // for desktop sidebar
   const [mobileOpen, setMobileOpen] = useState(false); // for mobile sidebar
-  const [messages, setMessages] = useState<{ role: 'user' | 'gemini', content: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,35 +23,37 @@ export default function ChatPage() {
   const handleSend = async (value: string) => {
     console.log('handleSend called with:', value);
     if (!value.trim()) return;
-    // Add user message and a placeholder for Gemini's response
-    setMessages((msgs) => [...msgs, { role: 'user', content: value }, { role: 'gemini', content: '__LOADING__' }]);
+    // Add user message and a placeholder for assistant's response
+    setMessages((msgs) => [...msgs, { role: 'user', content: value }, { role: 'assistant', content: '__LOADING__' }]);
     setInput("");
     setLoading(true);
     try {
       const res = await fetchAIResponse(value);
-      console.log('Gemini API raw response:', res);
+      console.log('OpenRouter API raw response:', res);
       // For OpenRouter, extract the assistant's message:
-      const assistantText = res.choices?.[0]?.message?.content || JSON.stringify(res);
+      const assistantText = res.choices?.[0]?.message?.content ||
+                           res.choices?.[0]?.text ||
+                           res.response?.choices?.[0]?.message?.content ||
+                           'Sorry, I received an unexpected response format from the AI service.';
       setMessages((msgs) => {
-        // Replace the last Gemini placeholder with the real response
+        // Replace the last assistant placeholder with the real response
         const updated = [...msgs];
-        const idx = updated.findIndex((m, i) => m.role === 'gemini' && m.content === '__LOADING__' && i === updated.length - 1);
-        if (idx !== -1) updated[idx] = { role: 'gemini', content: assistantText };
+        const idx = updated.findIndex((m, i) => m.role === 'assistant' && m.content === '__LOADING__' && i === updated.length - 1);
+        if (idx !== -1) updated[idx] = { role: 'assistant', content: assistantText };
         console.log('Updated messages:', updated);
         return updated;
       });
     } catch (err) {
       setMessages((msgs) => {
         const updated = [...msgs];
-        const idx = updated.findIndex((m, i) => m.role === 'gemini' && m.content === '__LOADING__' && i === updated.length - 1);
-        if (idx !== -1) updated[idx] = { role: 'gemini', content: 'Error: ' + (err as Error).message };
+        const idx = updated.findIndex((m, i) => m.role === 'assistant' && m.content === '__LOADING__' && i === updated.length - 1);
+        if (idx !== -1) updated[idx] = { role: 'assistant', content: 'Error: ' + (err as Error).message };
         return updated;
       });
     } finally {
       setLoading(false);
     }
   };
-
   // Handler to scroll input into view on focus (for mobile)
   const handleInputFocus = () => {
     if (inputRef.current) {

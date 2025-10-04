@@ -3,72 +3,55 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
-    const groqApiKey = process.env.GROQ_API_KEY;
     const openrouterApiKey = process.env.OPENROUTER_API_KEY;
 
-    // Try Groq first
-    if (groqApiKey) {
-      try {
-        const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${groqApiKey}`,
-          },
-          body: JSON.stringify({
-            model: 'llama3-70b-8192',
-            messages: [
-              { role: 'user', content: prompt }
-            ],
-            max_tokens: 1024,
-          }),
-        });
-        if (groqRes.ok) {
-          const data = await groqRes.json();
-          return NextResponse.json(data);
-        } else {
-          const errorText = await groqRes.text();
-          console.error('Groq API error:', errorText);
-        }
-      } catch (err) {
-        console.error('Groq fetch error:', err);
-        // If Groq fails, fall through to OpenRouter
-      }
+    console.log('🔍 API Route Debug Info:');
+    console.log('  - Prompt received:', prompt?.substring(0, 50) + '...');
+    console.log('  - OpenRouter API Key present:', !!openrouterApiKey);
+
+    if (!openrouterApiKey) {
+      console.error('❌ OpenRouter API key is missing');
+      return NextResponse.json(
+        { error: 'Server configuration error - API key missing' },
+        { status: 500 }
+      );
     }
 
-    // Fallback: OpenRouter
-    if (openrouterApiKey) {
-      try {
-        const orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${openrouterApiKey}`,
-          },
-          body: JSON.stringify({
-            messages: [
-              { role: 'user', content: prompt }
-            ],
-            max_tokens: 1024,
-          }),
-        });
-        if (orRes.ok) {
-          const data = await orRes.json();
-          return NextResponse.json(data);
-        } else {
-          const errorText = await orRes.text();
-          console.error('OpenRouter API error:', errorText);
-          return NextResponse.json({ error: 'OpenRouter API error', details: errorText }, { status: 500 });
-        }
-      } catch (err) {
-        console.error('OpenRouter fetch error:', err);
-        return NextResponse.json({ error: 'Both Groq and OpenRouter failed', details: String(err) }, { status: 500 });
-      }
+    console.log('🚀 Sending request to OpenRouter...');
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${openrouterApiKey}`,
+        'HTTP-Referer': req.nextUrl?.origin || 'http://localhost:3000',
+        'X-Title': 'Nova Chat App',
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/llama-3.2-3b-instruct:free',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 500,
+        temperature: 0.7,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('✅ OpenRouter API success');
+      return NextResponse.json(data);
     }
 
-    return NextResponse.json({ error: 'No API keys configured' }, { status: 500 });
-  } catch (err) {
-    console.error('API route error:', err);
-    return NextResponse.json({ error: 'Unexpected server error', details: String(err) }, { status: 500 });
+    const errorText = await response.text();
+    console.error('❌ OpenRouter API error:', response.status, errorText);
+    return NextResponse.json(
+      { error: 'Failed to get response from AI', details: errorText },
+      { status: response.status }
+    );
+
+  } catch (error) {
+    console.error('❌ API route error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error', details: String(error) },
+      { status: 500 }
+    );
   }
-} 
+}
