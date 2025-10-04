@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         'X-Title': 'Nova Chat App',
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.2-3b-instruct:free',
+        model: 'microsoft/wizardlm-2-8x22b:nitro',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 500,
         temperature: 0.7,
